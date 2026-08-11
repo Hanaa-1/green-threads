@@ -1,0 +1,61 @@
+[
+  {
+    "Brand": "Pact",
+    "SustainabilityScore": 86,
+    "Materials": {
+      "organic_cotton": 70
+    },
+    "LaborPractices": "Fair Trade Certified and living wage initiatives",
+    "Alternatives": [
+      "Organic Basics",
+      "Kotn",
+      "Tentree"
+    ],
+    "SourceUrl": "https://wearpact.com/sustainability",
+    "ScrapeStatus": "SUCCESS",
+    "RealSignalsDetected": {
+      "organic": 8,
+      "fair trade": 4
+    },
+    "DataNote": "Live data successfully fetched and verified."
+  },
+  {
+    "Brand": "Allbirds",
+    "SustainabilityScore": 50,
+    "Materials": {
+      "organic_cotton": 70,
+      "recycled_polyester": 30
+    },
+    "LaborPractices": "Standard industry practices",
+    "Alternatives": [
+      "Veja",
+      "Rothy's",
+      "Nisolo"
+    ],
+    "SourceUrl": "https://www.allbirds.com/pages/sustainable-practices",
+    "ScrapeStatus": "SUCCESS",
+    "RealSignalsDetected": {},
+    "DataNote": "Live data successfully fetched and verified."
+  },
+  {
+    "Brand": "Tentree",
+    "SustainabilityScore": 56,
+    "Materials": {
+      "organic_cotton": 70,
+      "recycled_polyester": 30
+    },
+    "LaborPractices": "Standard industry practices",
+    "Alternatives": [
+      "Pact",
+      "Patagonia",
+      "United By Blue"
+    ],
+    "SourceUrl": "https://www.tentree.com/pages/sustainability",
+    "ScrapeStatus": "SUCCESS",
+    "RealSignalsDetected": {
+      "carbon neutral": 1,
+      "sustainable": 1
+    },
+    "DataNote": "Live data successfully fetched and verified."
+  }
+]

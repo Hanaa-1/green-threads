@@ -1,0 +1,15 @@
+# Node
+node_modules/
+dist/
+.env
+.env.local
+
+# Python
+venv/
+__pycache__/
+*.db
+*.pyc
+
+# .NET
+bin/
+obj/
