@@ -9,10 +9,13 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReact", policy =>
     {
-        // Allow any localhost origin during development to prevent port mismatch issues
-        policy.SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost")
-              .AllowAnyHeader()
-              .AllowAnyMethod();
+        // Allow localhost for local dev, AND any Vercel deployment for production
+        policy.SetIsOriginAllowed(origin => 
+            new Uri(origin).Host == "localhost" || 
+            origin.EndsWith(".vercel.app") // Allows all Vercel preview and production URLs
+        )
+        .AllowAnyHeader()
+        .AllowAnyMethod();
     });
 });
 
