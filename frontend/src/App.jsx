@@ -83,28 +83,23 @@ function SustainabilityGauge({ score }) {
   return <svg ref={svgRef}></svg>;
 }
 
-// popular brands for quick searching
-function BrandCarousel({ onSelect }) {
+// static suggestion buttons to quickly populate the search bar
+function BrandSuggestions({ onSelect }) {
   const brands = ["Pact", "Allbirds", "Tentree", "Patagonia", "H&M", "Zara"];
-  const [currentIndex, setCurrentIndex] = useState(0);
-
 
   return (
-    <div className="brand-carousel">
-      <p className="carousel-label">Popular Brands:</p>
-      <div className="carousel-container">
-        {brands.map((brand, index) => {
-          const isActive = index === currentIndex;
-          return (
-            <button
-              key={brand}
-              className={`brand-button ${isActive ? 'active' : ''}`}
-              onClick={() => onSelect(brand)}
-            >
-              {brand}
-            </button>
-          );
-        })}
+    <div className="brand-suggestions">
+      <p className="suggestions-label">Try searching:</p>
+      <div className="suggestions-container">
+        {brands.map((brand) => (
+          <button
+            key={brand}
+            className="suggestion-btn"
+            onClick={() => onSelect(brand)}
+          >
+            {brand}
+          </button>
+        ))}
       </div>
     </div>
   );
@@ -157,7 +152,7 @@ function App() {
     <div className="app-container">
       {/* main header and app description */}
       <header>
-        <h1>🌿 GreenThreads</h1>
+        <h1>🌿 Green Threads</h1>
         <p>Transparent sustainability data for your favorite clothing brands.</p>
       </header>
 
@@ -174,8 +169,8 @@ function App() {
         </button>
       </form>
 
-      {/* quick-select brand carousel */}
-      <BrandCarousel onSelect={handleSearch} />
+      {/* quick-select suggestion buttons */}
+      <BrandSuggestions onSelect={handleSearch} />
 
       {/* display error messages if the fetch fails */}
       {error && <div className="error">{error}</div>}
@@ -221,7 +216,7 @@ function App() {
           
           {/* detailed breakdown of materials, labor, and alternatives */}
           <div className="details">
-            <h3> Material Impact</h3>
+            <h3>🧵 Material Impact</h3>
             {data.materials && Object.keys(data.materials).length > 0 ? (
               <ul>
                 {Object.entries(data.materials).map(([material, percentage]) => (

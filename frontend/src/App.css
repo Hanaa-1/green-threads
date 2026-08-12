@@ -26,7 +26,7 @@ header p {
 .search-form { 
   display: flex; 
   gap: 0.5rem; 
-  margin-bottom: 1.5rem; 
+  margin-bottom: 1rem; 
 }
 
 .search-form input {
@@ -63,26 +63,26 @@ header p {
   cursor: not-allowed;
 }
 
-/* Brand Carousel */
-.brand-carousel {
-  margin-bottom: 2rem;
+/* Brand Suggestions */
+.brand-suggestions {
   text-align: center;
+  margin-bottom: 2rem;
 }
 
-.carousel-label {
+.suggestions-label {
   font-size: 0.9rem;
   color: #6b7280;
   margin-bottom: 0.75rem;
 }
 
-.carousel-container {
+.suggestions-container {
   display: flex;
   gap: 0.5rem;
   justify-content: center;
   flex-wrap: wrap;
 }
 
-.brand-button {
+.suggestion-btn {
   padding: 0.5rem 1rem;
   background: white;
   border: 2px solid #d1d5db;
@@ -90,19 +90,13 @@ header p {
   cursor: pointer;
   font-size: 0.9rem;
   font-weight: 500;
-  transition: all 0.3s;
+  transition: all 0.2s;
 }
 
-.brand-button:hover {
+.suggestion-btn:hover {
   border-color: #059669;
   background: #f0fdf4;
-}
-
-.brand-button.active {
-  background: #059669;
-  color: white;
-  border-color: #059669;
-  transform: scale(1.05);
+  color: #059669;
 }
 
 /* Error Message */
