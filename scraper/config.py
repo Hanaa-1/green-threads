@@ -17,5 +17,30 @@ BRANDS_TO_SCRAPE = [
         "name": "Tentree",
         "url": "https://www.tentree.com/pages/sustainability",
         "alternatives": ["Pact", "Patagonia", "United By Blue"]
+    },
+     {
+        "name": "Everlane",
+        "url": "https://www.everlane.com/about",
+        "alternatives": ["Kotn", "Reformation", "Pact"]
+    },
+    {
+        "name": "Reformation",
+        "url": "https://www.thereformation.com/pages/sustainability",
+        "alternatives": ["Everlane", "Eileen Fisher", "Amour Vert"]
+    },
+    {
+        "name": "Kotn",
+        "url": "https://kotn.com/pages/our-impact",
+        "alternatives": ["Pact", "Organic Basics", "Tentree"]
+    },
+    {
+        "name": "Nisolo",
+        "url": "https://nisolo.com/pages/sustainability",
+        "alternatives": ["Allbirds", "Veja", "Rothy's"]
+    },
+    {
+        "name": "United By Blue",
+        "url": "https://www.unitedbyblue.com/sustainability/",
+        "alternatives": ["Tentree", "Patagonia", "Finisterre"]
     }
 ]

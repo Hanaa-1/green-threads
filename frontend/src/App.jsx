@@ -85,7 +85,7 @@ function SustainabilityGauge({ score }) {
 
 // static suggestion buttons to quickly populate the search bar
 function BrandSuggestions({ onSelect }) {
-  const brands = ["Pact", "Allbirds", "Tentree", "Patagonia", "H&M", "Zara"];
+  const brands = ["Pact", "Allbirds", "Tentree", "Everlane", "Reformation", "Kotn"];
 
   return (
     <div className="brand-suggestions">
