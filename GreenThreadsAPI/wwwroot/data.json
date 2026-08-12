@@ -57,5 +57,90 @@
       "sustainable": 1
     },
     "DataNote": "Live data successfully fetched and verified."
+  },
+  {
+    "Brand": "Everlane",
+    "SustainabilityScore": 50,
+    "Materials": {
+      "organic_cotton": 70,
+      "recycled_polyester": 30
+    },
+    "LaborPractices": "Standard industry practices",
+    "Alternatives": [
+      "Kotn",
+      "Reformation",
+      "Pact"
+    ],
+    "SourceUrl": "https://www.everlane.com/about",
+    "ScrapeStatus": "SUCCESS",
+    "RealSignalsDetected": {},
+    "DataNote": "Live data successfully fetched and verified."
+  },
+  {
+    "Brand": "Reformation",
+    "SustainabilityScore": 100,
+    "Materials": {
+      "recycled_polyester": 190,
+      "organic_cotton": 45
+    },
+    "LaborPractices": "Standard industry practices",
+    "Alternatives": [
+      "Everlane",
+      "Eileen Fisher",
+      "Amour Vert"
+    ],
+    "SourceUrl": "https://www.thereformation.com/pages/sustainability",
+    "ScrapeStatus": "SUCCESS",
+    "RealSignalsDetected": {
+      "organic": 3,
+      "recycled": 30,
+      "sustainable": 15
+    },
+    "DataNote": "Live data successfully fetched and verified."
+  },
+  {
+    "Brand": "Kotn",
+    "SustainabilityScore": 0,
+    "Materials": {
+      "unavailable": 100
+    },
+    "LaborPractices": "Data unavailable",
+    "Alternatives": [
+      "Pact",
+      "Organic Basics",
+      "Tentree"
+    ],
+    "ScrapeStatus": "FAILED_NO_HISTORY",
+    "DataNote": "Live scrape failed (404 Client Error: Not Found for url: https://kotn.com/pages/our-impact). No historical data available."
+  },
+  {
+    "Brand": "Nisolo",
+    "SustainabilityScore": 0,
+    "Materials": {
+      "unavailable": 100
+    },
+    "LaborPractices": "Data unavailable",
+    "Alternatives": [
+      "Allbirds",
+      "Veja",
+      "Rothy's"
+    ],
+    "ScrapeStatus": "FAILED_NO_HISTORY",
+    "DataNote": "Live scrape failed (404 Client Error: Not Found for url: https://nisolo.com/pages/sustainability). No historical data available."
+  },
+  {
+    "Brand": "United By Blue",
+    "SustainabilityScore": 0,
+    "Materials": {
+      "unavailable": 100
+    },
+    "LaborPractices": "Data unavailable",
+    "Alternatives": [
+      "Tentree",
+      "Patagonia",
+      "Finisterre"
+    ],
+    "ScrapeStatus": "FAILED_NO_HISTORY",
+    "DataNote": "Live scrape failed (404 Client Error: Not Found for url: https://unitedbyblue.com/sustainability). No historical data available."
   }
 ]
