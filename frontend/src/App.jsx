@@ -85,7 +85,7 @@ function SustainabilityGauge({ score }) {
 
 // static suggestion buttons to quickly populate the search bar
 function BrandSuggestions({ onSelect }) {
-  const brands = ["Pact", "Allbirds", "Tentree", "Everlane", "Reformation", "Kotn"];
+  const brands = ["Pact", "Allbirds", "Tentree", "Everlane" ];
 
   return (
     <div className="brand-suggestions">
@@ -108,22 +108,38 @@ function BrandSuggestions({ onSelect }) {
 // main application component handling state and api fetching
 function App() {
   const [search, setSearch] = useState('');
+  const [urlInput, setUrlInput] = useState('');
   const [data, setData] = useState(null);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [mode, setMode] = useState('brand'); // 'brand' or 'url'
 
   // fetch sustainability data from the c# backend
-  const handleSearch = async (brandName) => {
-    if (!brandName) return;
-    setSearch(brandName);
+  const handleSearch = async (inputValue) => {
+    if (!inputValue) return;
+    
+    // update the correct state based on mode
+    if (mode === 'brand') setSearch(inputValue);
+    else setUrlInput(inputValue);
+
     setLoading(true);
     setError('');
     setData(null);
 
     try {
-      // use environment variable for production api url, fallback to local for dev
       const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5190';
-      const response = await fetch(`${apiUrl}/api/sustainability/${brandName}`);
+      let response;
+
+      // FIX: Route to the correct endpoint based on the active mode
+      if (mode === 'brand') {
+        response = await fetch(`${apiUrl}/api/sustainability/${inputValue}`);
+      } else {
+        response = await fetch(`${apiUrl}/api/sustainability/analyze-url`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url: inputValue })
+        });
+      }
 
       // ensure the backend actually returned json and not an html error page
       const contentType = response.headers.get("content-type");
@@ -145,7 +161,7 @@ function App() {
   // handle form submission from the search bar
   const handleSubmit = (e) => {
     e.preventDefault();
-    handleSearch(search);
+    handleSearch(mode === 'brand' ? search : urlInput);
   };
 
   return (
@@ -156,21 +172,27 @@ function App() {
         <p>Transparent sustainability data for your favorite clothing brands.</p>
       </header>
 
-      {/* search form for manual brand lookup */}
+      {/* mode toggle buttons to switch between brand search and custom url analysis */}
+      <div className="mode-toggle">
+        <button className={mode === 'brand' ? 'active' : ''} onClick={() => setMode('brand')}>Search by Brand</button>
+        <button className={mode === 'url' ? 'active' : ''} onClick={() => setMode('url')}>Analyze Custom URL</button>
+      </div>
+
+      {/* search form for manual brand lookup or url analysis */}
       <form onSubmit={handleSubmit} className="search-form">
         <input 
-          type="text" 
-          placeholder="Search for a brand..." 
-          value={search} 
-          onChange={(e) => setSearch(e.target.value)} 
+          type={mode === 'brand' ? "text" : "url"} 
+          placeholder={mode === 'brand' ? "Search for a brand (e.g., Pact)..." : "Paste a brand's sustainability page URL..."} 
+          value={mode === 'brand' ? search : urlInput} 
+          onChange={(e) => mode === 'brand' ? setSearch(e.target.value) : setUrlInput(e.target.value)} 
         />
         <button type="submit" disabled={loading}>
-          {loading ? 'Searching...' : 'Search'}
+          {loading ? 'Analyzing...' : (mode === 'brand' ? 'Search' : 'Analyze')}
         </button>
       </form>
 
-      {/* quick-select suggestion buttons */}
-      <BrandSuggestions onSelect={handleSearch} />
+      {/* quick-select suggestion buttons (only show in brand mode) */}
+      {mode === 'brand' && <BrandSuggestions onSelect={handleSearch} />}
 
       {/* display error messages if the fetch fails */}
       {error && <div className="error">{error}</div>}
@@ -205,6 +227,15 @@ function App() {
               <div>
                 <strong>Live Data</strong>
                 <p>{data.dataNote || "Live data successfully fetched."}</p>
+              </div>
+            </div>
+          )}
+          {data.scrapeStatus === "LIVE_ON_DEMAND" && (
+            <div className="status-banner success">
+              <span className="status-icon">⚡</span>
+              <div>
+                <strong>Real-Time Analysis</strong>
+                <p>{data.dataNote || "Analyzed on demand."}</p>
               </div>
             </div>
           )}
@@ -251,30 +282,27 @@ function App() {
               We believe in full transparency. Here's exactly how we calculated this score and where the data came from.
             </p>
 
-            {/* display the exact url the python scraper pulled data from */}
+            {/* display the exact url the python scraper pulled data from, or the custom url */}
             <div className="transparency-card">
               <h4>📍 Data Source</h4>
               {data.sourceUrl ? (
-                <p><strong>Scraped from:</strong> <a href={data.sourceUrl} target="_blank" rel="noopener noreferrer">{data.sourceUrl}</a></p>
+                <p><strong>Analyzed from:</strong> <a href={data.sourceUrl} target="_blank" rel="noopener noreferrer">{data.sourceUrl}</a></p>
               ) : (
                 <p>No source URL available.</p>
-              )}
-              {data.scrapeStatus === "CACHED_HISTORICAL" && (
-                <p className="cache-note">⚠️ Live scrape failed. This data was last verified on a previous run.</p>
               )}
             </div>
 
             {/* show the exact sustainability keywords detected by the scraper */}
             {data.realSignalsDetected && Object.keys(data.realSignalsDetected).length > 0 && (
               <div className="transparency-card">
-                <h4>🎯 Sustainability Keywords Detected</h4>
+                <h4>🎯 Sustainability Indicators Detected</h4>
                 <p className="keyword-explanation">
-                  Our algorithm scanned the brand's website and counted occurrences of these sustainability indicators:
+                  Our algorithm scanned the page and counted occurrences of these sustainability indicators:
                 </p>
                 <div className="keywords-grid">
                   {Object.entries(data.realSignalsDetected).map(([keyword, count]) => (
                     <div key={keyword} className="keyword-item">
-                      <span className="keyword-name">"{keyword}"</span>
+                      <span className="keyword-name">{keyword.replace('_', ' ')}</span>
                       <span className="keyword-count">{count}x found</span>
                     </div>
                   ))}
@@ -286,17 +314,11 @@ function App() {
             <div className="transparency-card">
               <h4>📊 How We Calculate Scores</h4>
               <div className="methodology">
-                <p><strong>Material Composition (60% of score):</strong></p>
+                <p><strong>Keyword Analysis:</strong></p>
                 <ul>
-                  <li>Organic materials: +0.8 points per percentage</li>
-                  <li>Recycled materials: +0.6 points per percentage</li>
-                  <li>Conventional materials: -0.3 points per percentage</li>
-                </ul>
-                <p><strong>Labor Practices (40% of score):</strong></p>
-                <ul>
-                  <li>Fair Trade certification: +20 points</li>
-                  <li>Supply chain transparency: +10 points</li>
-                  <li>Other certifications: +10 points</li>
+                  <li>Positive indicators (organic, recycled, fair trade): +3 points each</li>
+                  <li>Negative indicators (fast fashion, conventional): -5 points each</li>
+                  <li>Base score starts at 50, clamped between 0 and 100</li>
                 </ul>
               </div>
             </div>

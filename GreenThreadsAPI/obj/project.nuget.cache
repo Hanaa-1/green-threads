@@ -1,8 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "LKLeT8FWdHc=",
+  "dgSpecHash": "7q3ZHsoQ+js=",
   "success": true,
   "projectFilePath": "D:\\vscode\\GreenThreads\\GreenThreadsAPI\\GreenThreadsAPI.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\hanaa\\.nuget\\packages\\htmlagilitypack\\1.12.4\\htmlagilitypack.1.12.4.nupkg.sha512",
+    "C:\\Users\\hanaa\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\8.0.29\\microsoft.aspnetcore.app.ref.8.0.29.nupkg.sha512",
+    "C:\\Users\\hanaa\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\8.0.29\\microsoft.netcore.app.host.win-x64.8.0.29.nupkg.sha512",
+    "C:\\Users\\hanaa\\.nuget\\packages\\microsoft.netcore.app.ref\\8.0.29\\microsoft.netcore.app.ref.8.0.29.nupkg.sha512",
+    "C:\\Users\\hanaa\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\8.0.29\\microsoft.windowsdesktop.app.ref.8.0.29.nupkg.sha512"
+  ],
   "logs": []
 }

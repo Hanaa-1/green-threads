@@ -1,5 +1,6 @@
 using System.Text.Json;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 // initialize the ASP.NET Core Minimal API builder
 var builder = WebApplication.CreateBuilder(args);
@@ -49,8 +50,80 @@ app.MapGet("/api/sustainability/{brand}", async (string brand, IWebHostEnvironme
     return result != null ? Results.Ok(result) : Results.NotFound(new { error = "Brand not found." });
 });
 
-// start the API server
+// NEW: Real-time custom URL analyzer endpoint
+app.MapPost("/api/sustainability/analyze-url", async (CustomUrlRequest request) =>
+{
+    if (string.IsNullOrWhiteSpace(request.Url) || !Uri.IsWellFormedUriString(request.Url, UriKind.Absolute))
+    {
+        return Results.BadRequest(new { error = "Please provide a valid URL." });
+    }
+
+    try
+    {
+        using var httpClient = new HttpClient();
+        httpClient.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36");
+        
+        // fetch the HTML
+        var html = await httpClient.GetStringAsync(request.Url);
+        
+        // parse and clean the HTML (replicating BeautifulSoup)
+        var htmlDoc = new HtmlAgilityPack.HtmlDocument();
+        htmlDoc.LoadHtml(html);
+        
+        // remove scripts styles and nav to get clean text
+        htmlDoc.DocumentNode.Descendants()
+            .Where(n => n.Name == "script" || n.Name == "style" || n.Name == "nav" || n.Name == "footer")
+            .ToList()
+            .ForEach(n => n.Remove());
+
+        var text = htmlDoc.DocumentNode.InnerText.ToLower();
+
+        // heuristic scoring logic (mirrors the Python scraper)
+        var positiveKeywords = new[] { "organic", "recycled", "fair trade", "carbon neutral", "sustainable", "transparent" };
+        var negativeKeywords = new[] { "fast fashion", "conventional" };
+
+        int positiveCount = positiveKeywords.Count(kw => Regex.Matches(text, $@"\b{kw}\b").Count > 0);
+        int negativeCount = negativeKeywords.Count(kw => Regex.Matches(text, $@"\b{kw}\b").Count > 0);
+
+        int score = 50 + (positiveCount * 3) - (negativeCount * 5);
+        score = Math.Max(0, Math.Min(100, score)); // Clamp 0-100
+
+        // build a dynamic response
+        var result = new
+        {
+            Brand = "Custom URL Analysis",
+            SustainabilityScore = score,
+            Materials = new Dictionary<string, int> { { "analysis_based", 100 } },
+            LaborPractices = score >= 70 ? "Positive sustainability indicators detected." : "Standard industry practices.",
+            Alternatives = new List<string> { "Pact", "Allbirds", "Tentree" },
+            ScrapeStatus = "LIVE_ON_DEMAND",
+            DataNote = $"Real-time analysis of provided URL. Score based on keyword density.",
+            SourceUrl = request.Url,
+            RealSignalsDetected = new Dictionary<string, int> 
+            { 
+                { "positive_indicators", positiveCount }, 
+                { "negative_indicators", negativeCount } 
+            }
+        };
+
+        return Results.Ok(result);
+    }
+    catch (Exception ex)
+    {
+        return Results.BadRequest(new { error = $"Failed to analyze URL: {ex.Message}" });
+    }
+});
+
+
 app.Run();
+
+
+
+// helper class for the POST request
+public class CustomUrlRequest
+{
+    public string Url { get; set; } = "";
+}
 
 // data model representing the structure of the sustainability JSON payload
 public class BrandData
