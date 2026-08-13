@@ -7,7 +7,7 @@ Green Threads is a full-stack web application that aggregates, analyzes, and vis
 
 ###  Live Demo
 * **Frontend:** https://green-threads-iota.vercel.app/
-* **Backend API:** 
+* **Backend API:** https://green-threads-api.onrender.com
 
 ---
 
@@ -24,8 +24,28 @@ Green Threads is a full-stack web application that aggregates, analyzes, and vis
 ```bash
 cd GreenThreadsAPI
 dotnet run --urls "http://localhost:5190"
+
+```
+### Frontend (React)
+```bash
+cd frontend
+npm install
+npm run dev 
 ```
 
+### Data Scraper (Python)
+```bash 
+cd scraper
+python -m venv venv
+# Windows:
+.\venv\Scripts\activate
+# Mac/Linux:
+source venv/bin/activate
+
+pip install requests beautifulsoup4 playwright
+playwright install chromium
+python scraper.py
+```
 
 ---
 
